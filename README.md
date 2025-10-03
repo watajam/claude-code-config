@@ -84,27 +84,95 @@ SuperClaudeフレームワーク、カスタムエージェント、スラッシ
 
 [wshobson/agents](https://github.com/wshobson/agents)から必要な機能を選定・統合
 
+**命名規則**:
+- `-sc` サフィックス: SuperClaude Framework専用エージェント
+- `-wshobson` サフィックス: wshobson/agentsから統合したエージェント
+- `-official` サフィックス: 公式推奨エージェント
+
 #### 主要エージェント一覧
 
 | カテゴリ | エージェント名 | 説明 | 主な用途 |
 |---------|--------------|------|---------|
 | **開発系** | python-expert-sc | SOLID原則に従った本番対応Pythonコード生成 | Python開発、最適化、テスト戦略 |
-| | backend-architect-wshobson | RESTful API、マイクロサービス設計 | バックエンド設計、DB設計 |
+| | backend-architect-sc | RESTful API、マイクロサービス設計 | バックエンド設計、DB設計 |
+| | backend-architect-wshobson | バックエンド開発専門 | API設計、データベース最適化 |
+| | frontend-architect-sc | アクセシブルで高性能なUI設計 | UX、モダンフレームワーク |
 | | frontend-developer-wshobson | React/Vue/Angularコンポーネント実装 | フロントエンド開発 |
+| | csharp-pro-wshobson | 最新C#機能を活用した.NET開発 | records、pattern matching、async/await |
+| | javascript-pro-wshobson | モダンJavaScript/ES6+開発 | 非同期パターン、Node.js API |
+| | typescript-pro-wshobson | 高度な型システム活用TypeScript開発 | ジェネリクス、型推論最適化 |
+| | mobile-developer-wshobson | React Native/Flutterアプリ開発 | クロスプラットフォーム、ネイティブ統合 |
+| | ios-developer-wshobson | Swift/SwiftUIネイティブiOS開発 | UIKit/SwiftUI、Core Data |
 | | serena-expert | /serenaコマンド活用による効率的開発 | アプリ開発、API実装、システム構築 |
 | **品質系** | code-reviewer-official | コード品質・セキュリティ・保守性レビュー | コードレビュー、品質保証 |
-| | debugger-wshobson | エラー・テスト失敗のデバッグ専門 | 根本原因分析、バグ修正 |
+| | code-reviewer-wshobson | エキスパートコードレビュー専門 | 品質、セキュリティ、保守性 |
+| | quality-engineer-sc | 包括的テスト戦略とエッジケース検出 | 品質保証、テスト設計 |
+| | debugger-official | エラー・テスト失敗のデバッグ専門 | 問題調査、根本原因分析 |
+| | debugger-wshobson | デバッグスペシャリスト | エラー解析、バグ修正 |
 | | test-automator-wshobson | unit/integration/E2Eテスト自動化 | テスト戦略、CI/CD統合 |
-| **セキュリティ** | security-auditor-wshobson | OWASP準拠、認証実装、脆弱性検出 | セキュリティレビュー、認証フロー |
-| **パフォーマンス** | performance-engineer-wshobson | ボトルネック分析、最適化、キャッシング戦略 | 性能改善、負荷テスト |
+| **セキュリティ** | security-engineer-sc | セキュリティ標準準拠と脆弱性検出 | セキュリティ監査、ベストプラクティス |
+| | security-auditor-wshobson | OWASP準拠、認証実装、脆弱性検出 | セキュリティレビュー、認証フロー |
+| **パフォーマンス** | performance-engineer-sc | 測定駆動分析とボトルネック解消 | パフォーマンス最適化 |
+| | performance-engineer-wshobson | ボトルネック分析、最適化、キャッシング戦略 | 性能改善、負荷テスト |
 | **アーキテクチャ** | system-architect-sc | スケーラブルなシステム設計 | 長期的な技術判断、保守性 |
+| | architect-review-wshobson | アーキテクチャ一貫性レビュー | 設計パターン、SOLID原則検証 |
+| | refactoring-expert-sc | 体系的リファクタリングと技術的負債削減 | コード品質改善、クリーンコード |
+| | legacy-modernizer-wshobson | レガシーコード刷新とフレームワーク移行 | 技術的負債解消、段階的移行 |
+| | root-cause-analyst-sc | エビデンスベース問題分析と仮説検証 | 根本原因調査、システム分析 |
+| **DevOps/インフラ** | devops-architect-sc | インフラ自動化と信頼性向上 | CI/CD、監視、デプロイ |
+| | devops-troubleshooter-wshobson | 本番問題デバッグとログ分析 | インシデント対応、根本原因分析 |
+| | deployment-engineer-wshobson | CI/CDパイプライン構築と自動化 | GitHub Actions、Docker、Kubernetes |
+| | incident-responder-wshobson | 本番インシデント緊急対応 | 障害対応、即時修正、事後分析 |
+| | network-engineer-wshobson | ネットワーク接続とプロトコル最適化 | DNS、SSL/TLS、負荷分散 |
+| **データベース** | database-admin-wshobson | DB運用・バックアップ・レプリケーション | データベース管理、災害復旧 |
+| | database-optimizer-wshobson | SQLクエリ最適化とインデックス設計 | N+1問題解決、クエリチューニング |
+| | sql-pro-wshobson | 複雑SQL作成と実行計画最適化 | CTE、ウィンドウ関数、ストアドプロシージャ |
+| | data-scientist-official | SQL/BigQueryによるデータ分析 | データ分析、クエリ最適化 |
+| | data-scientist-wshobson | データ分析エキスパート | BigQuery、データインサイト |
+| **AI/ML** | ai-engineer-wshobson | LLMアプリケーション・RAGシステム構築 | ベクトル検索、エージェント統合 |
+| | ml-engineer-wshobson | MLパイプライン・モデル本番化 | TensorFlow/PyTorch、A/Bテスト |
+| | mlops-engineer-wshobson | ML実験管理とモデルレジストリ | MLflow、Kubeflow、再学習自動化 |
+| | quant-analyst-wshobson | 金融モデル・トレーディング戦略構築 | ポートフォリオ最適化、リスク分析 |
+| | risk-manager-wshobson | ポートフォリオリスク監視と戦略 | ヘッジ戦略、ポジション管理 |
 | **ドキュメント** | technical-writer-sc | 技術文書作成、対象読者に合わせた説明 | API文書、ユーザーガイド |
-| **特化系** | seo-content-writer-wshobson | SEO最適化コンテンツ作成 | ブログ記事、マーケティング |
-| | legal-advisor-wshobson | プライバシーポリシー、利用規約作成 | 法的文書、GDPR対応 |
+| | api-documenter-wshobson | OpenAPI/Swagger仕様・SDK生成 | API文書、クライアントライブラリ |
+| | docs-architect-wshobson | コードベースから包括的技術文書生成 | システム文書、アーキテクチャガイド |
+| | reference-builder-wshobson | 網羅的技術リファレンス作成 | API仕様、設定ガイド |
+| **教育/学習** | learning-guide-sc | プログラミング概念教育と段階的学習 | 概念説明、実践例 |
+| | socratic-mentor-sc | ソクラテス式問答による学習支援 | 発見学習、戦略的質問 |
+| **SEO/コンテンツ** | seo-content-writer-wshobson | SEO最適化コンテンツ作成 | ブログ記事、マーケティング |
+| | seo-content-auditor-wshobson | コンテンツ品質・E-E-A-T分析 | 品質評価、改善提案 |
+| | seo-content-planner-wshobson | コンテンツ戦略・トピッククラスター設計 | コンテンツカレンダー、ギャップ分析 |
+| | seo-content-refresher-wshobson | 古いコンテンツの更新提案 | 鮮度維持、統計更新 |
+| | seo-keyword-strategist-wshobson | キーワード使用分析・LSI提案 | 密度最適化、セマンティック展開 |
+| | seo-meta-optimizer-wshobson | メタタイトル・ディスクリプション最適化 | クリック率向上、文字数最適化 |
+| | seo-snippet-hunter-wshobson | 強調スニペット獲得フォーマット作成 | SERP機能対応 |
+| | seo-structure-architect-wshobson | コンテンツ構造・スキーママークアップ最適化 | 見出し階層、内部リンク |
+| | seo-authority-builder-wshobson | E-E-A-T信号分析と信頼性強化 | 権威性構築、YMYL対応 |
+| | seo-cannibalization-detector-wshobson | キーワード重複・カニバリゼーション検出 | 差別化戦略 |
+| | content-marketer-wshobson | マーケティングコンテンツ作成 | ブログ、SNS、メール |
+| **法務/コンプライアンス** | legal-advisor-wshobson | プライバシーポリシー、利用規約作成 | 法的文書、GDPR対応 |
+| **決済/金融** | payment-integration-wshobson | Stripe/PayPal決済統合 | 決済フロー、サブスクリプション |
+| **デザイン/UI** | ui-ux-designer-wshobson | インターフェース設計・デザインシステム | ワイヤーフレーム、アクセシビリティ |
 | | mermaid-expert-wshobson | Mermaid図（フローチャート、ER図）作成 | ビジュアル文書化、設計図 |
+| **ビジネス分析** | business-analyst-wshobson | メトリクス分析・レポート作成 | ダッシュボード、成長予測 |
+| | requirements-analyst-sc | 要件発見と仕様明確化 | 要件定義、体系的分析 |
+| **開発体験** | dx-optimizer-wshobson | 開発者体験向上とツール改善 | セットアップ最適化、ワークフロー改善 |
+| | prompt-engineer-wshobson | LLMプロンプト最適化 | AI機能構築、エージェント性能向上 |
+| **調査/検索** | search-specialist-wshobson | 高度な検索技術と情報収集 | 競合分析、事実確認 |
+| | error-detective-wshobson | ログ・エラーパターン検索 | 根本原因特定、異常検出 |
+| **統合/管理** | context-manager-wshobson | マルチエージェント・長期タスク管理 | コンテキスト保持、複雑ワークフロー |
 | **ルーティング** | intelligent-router-codex | タスク複雑度を評価し最適な実行方法を自動判断 | Codex MCP統合、タスク分析 |
 
 ### スラッシュコマンド
+
+**命名規則**:
+- `/sc:*` プレフィックス: SuperClaude Framework統合コマンド
+- `/think/*` プレフィックス: Sequential MCP活用思考深度コマンド
+- `/tsumiki/*` プレフィックス: Tsumikiワークフロー（TDD、Kairo、リバースエンジニアリング）
+- `/git/*` プレフィックス: Git/GitHub統合コマンド
+- `/web/*` プレフィックス: Webテスト・ブラウザ自動化コマンド
+- `/zenn/*` プレフィックス: Zenn記事管理コマンド
 
 #### 汎用ワークフロー
 
@@ -126,6 +194,19 @@ SuperClaudeフレームワーク、カスタムエージェント、スラッシ
 | `/sc:test` | テスト実行・カバレッジ分析 | Playwright |
 | `/sc:load` | プロジェクトコンテキスト読込 | Serena |
 | `/sc:save` | セッション永続化 | Serena |
+| `/sc:document` | コンポーネント/関数/API文書生成 | - |
+| `/sc:explain` | コード・概念・振る舞いの明確な説明 | - |
+| `/sc:improve` | コード品質・性能・保守性の体系的改善 | - |
+| `/sc:troubleshoot` | コード・ビルド・デプロイの問題診断解決 | - |
+| `/sc:estimate` | タスク・機能・プロジェクトの開発見積 | - |
+| `/sc:spawn` | メタシステムタスク編成と委譲 | - |
+| `/sc:build` | ビルド・コンパイル・パッケージ化 | - |
+| `/sc:cleanup` | コード整理・デッドコード削除・最適化 | - |
+| `/sc:git` | Git操作と最適化ワークフロー | - |
+| `/sc:index` | プロジェクト文書・ナレッジベース生成 | - |
+| `/sc:reflect` | タスク振り返りとSerena MCP分析 | Serena |
+| `/sc:select-tool` | 複雑度評価による最適MCP選択 | - |
+| `/sc:workflow` | PRD・要件から構造化実装ワークフロー生成 | - |
 
 #### Git統合
 
@@ -134,24 +215,61 @@ SuperClaudeフレームワーク、カスタムエージェント、スラッシ
 | `/git/create-pr` | プルリクエスト作成 |
 | `/git/review-local-changes` | ローカル変更レビュー |
 | `/git/fix-github-issue` | GitHub Issue修正 |
+| `/git/plan-github-issue` | GitHub Issue実装計画策定 |
+| `/git/update-planned-issue` | 計画済みIssueの更新 |
+| `/git/apply-review-feedback` | レビューフィードバック適用 |
 
 #### 思考深度コマンド（/think:）
 
 | コマンド | 思考量 | 用途 |
 |---------|--------|-----|
 | `/think/think-hard` | 中深度（~10K tokens） | アーキテクチャ分析、依存関係調査 |
+| `/think/think-harder` | 深層分析（~20K tokens） | 複雑な問題の多角的分析 |
 | `/think/ultrathink` | 最大深度（~32K tokens） | システム再設計、レガシー移行、複雑デバッグ |
 
 #### TDDワークフロー（/tsumiki:）
 
 | コマンド | フェーズ | 説明 |
 |---------|---------|------|
+| `/tsumiki/init-tech-stack` | 初期化 | 技術スタック選定（CLAUDE.md作成） |
 | `/tsumiki/tdd-requirements` | 準備 | 要件整理 |
 | `/tsumiki/tdd-testcases` | 準備 | テストケース洗い出し |
+| `/tsumiki/tdd-todo` | 準備 | 実装可能TODOリスト作成 |
 | `/tsumiki/tdd-red` | Red | 失敗するテスト作成 |
 | `/tsumiki/tdd-green` | Green | テストを通す実装 |
 | `/tsumiki/tdd-refactor` | Refactor | コード品質改善 |
+| `/tsumiki/tdd-checkpoint` | 検証 | 各フェーズ完了検証 |
 | `/tsumiki/tdd-verify-complete` | 完了 | 全テスト通過検証 |
+| `/tsumiki/auto-debug` | デバッグ | テストエラー自動解消 |
+
+#### Kairoワークフロー（/tsumiki:）
+
+| コマンド | 説明 |
+|---------|------|
+| `/tsumiki/kairo-requirements` | EARS記法で要件定義書作成 |
+| `/tsumiki/kairo-design` | 技術設計書生成（データフロー、API、DB） |
+| `/tsumiki/kairo-tasks` | 設計から1日単位タスク分割・フェーズ整理 |
+| `/tsumiki/kairo-task-verify` | タスクファイル内容検証・補完 |
+| `/tsumiki/kairo-implement` | 分割タスクの順次実装 |
+
+#### リバースエンジニアリング（/tsumiki:）
+
+| コマンド | 説明 |
+|---------|------|
+| `/tsumiki/rev-requirements` | コードベースから要件定義書逆生成 |
+| `/tsumiki/rev-design` | コードベースから技術設計書逆生成 |
+| `/tsumiki/rev-specs` | コードベースからテストケース・仕様書逆生成 |
+| `/tsumiki/rev-tasks` | コードベースから実装タスク一覧逆生成 |
+
+#### その他Tsumikiコマンド
+
+| コマンド | 説明 |
+|---------|------|
+| `/tsumiki/direct-setup` | DIRECT設定作業実行 |
+| `/tsumiki/direct-verify` | DIRECT設定動作確認・テスト |
+| `/tsumiki/start-server` | 開発サーバー起動・管理 |
+| `/tsumiki/tech-stack` | 技術スタック情報表示 |
+| `/tsumiki/tdd-load-context` | TDD関連ファイル読込（非推奨） |
 
 #### Zenn記事管理
 
