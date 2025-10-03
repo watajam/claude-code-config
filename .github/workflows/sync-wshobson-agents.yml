@@ -1,0 +1,76 @@
+name: Sync wshobson/agents
+
+on:
+  schedule:
+    # 毎週月曜日 9:00 JST (00:00 UTC)
+    - cron: '0 0 * * 1'
+  workflow_dispatch: # 手動実行も可能
+
+jobs:
+  sync-agents:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout this repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Setup Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Clone wshobson/agents
+        run: |
+          git clone --depth 1 https://github.com/wshobson/agents.git /tmp/wshobson-agents
+
+      - name: Sync markdown files
+        run: |
+          # ルート直下の.mdファイルをagentsディレクトリにコピー
+          find /tmp/wshobson-agents -maxdepth 1 -name "*.md" -type f -exec cp {} agents/ \;
+
+      - name: Check for changes
+        id: check_changes
+        run: |
+          git add agents/
+          if git diff --staged --quiet; then
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create Pull Request
+        if: steps.check_changes.outputs.has_changes == 'true'
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "sync: Update wshobson/agents markdown files"
+          branch: sync/wshobson-agents
+          delete-branch: true
+          title: "🔄 Sync wshobson/agents markdown files"
+          body: |
+            ## 📋 Summary
+
+            このPRは[wshobson/agents](https://github.com/wshobson/agents)リポジトリのルート直下にある`.md`ファイルを自動同期します。
+
+            ## 📁 Changes
+
+            - ソース: `wshobson/agents/*.md` (root level)
+            - 配置先: `agents/`
+            - 新規追加ファイルと既存ファイルの更新を含みます
+
+            ## ✅ Review Checklist
+
+            - [ ] 追加されたエージェント定義を確認
+            - [ ] 既存エージェントの更新内容を確認
+            - [ ] 不要なファイルが含まれていないか確認
+
+            ---
+
+            🤖 自動生成されたPRです（週次実行: 毎週月曜日 9:00 JST）
+          labels: |
+            sync
+            agents
+            automated

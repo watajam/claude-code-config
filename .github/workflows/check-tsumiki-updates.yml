@@ -1,0 +1,124 @@
+name: Check Tsumiki Updates
+
+on:
+  schedule:
+    # 毎週月曜日 10:00 JST (01:00 UTC)
+    - cron: '0 1 * * 1'
+  workflow_dispatch: # 手動実行も可能
+
+jobs:
+  check-updates:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout this repository
+        uses: actions/checkout@v4
+
+      - name: Get last check timestamp
+        id: last_check
+        run: |
+          # 前回チェック時のタイムスタンプを取得（ファイルが存在しない場合は7日前）
+          if [ -f .github/.last-tsumiki-check ]; then
+            LAST_CHECK=$(cat .github/.last-tsumiki-check)
+          else
+            LAST_CHECK=$(date -d '7 days ago' --iso-8601=seconds)
+          fi
+          echo "timestamp=$LAST_CHECK" >> $GITHUB_OUTPUT
+
+      - name: Clone Tsumiki
+        run: |
+          git clone https://github.com/classmethod/tsumiki.git /tmp/tsumiki
+
+      - name: Check for updates
+        id: check_updates
+        run: |
+          cd /tmp/tsumiki
+          LAST_CHECK="${{ steps.last_check.outputs.timestamp }}"
+
+          # 前回チェック以降のコミットを取得
+          COMMITS=$(git log --since="$LAST_CHECK" --pretty=format:"%H" | wc -l)
+
+          if [ "$COMMITS" -gt 0 ]; then
+            echo "has_updates=true" >> $GITHUB_OUTPUT
+
+            # 変更されたファイル一覧を取得
+            CHANGED_FILES=$(git log --since="$LAST_CHECK" --name-only --pretty=format: | sort -u | grep -v '^$')
+            echo "changed_files<<EOF" >> $GITHUB_OUTPUT
+            echo "$CHANGED_FILES" >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
+
+            # コミット情報を取得
+            COMMIT_INFO=$(git log --since="$LAST_CHECK" --pretty=format:"- [%h](https://github.com/classmethod/tsumiki/commit/%H) %s (%ar)" --reverse)
+            echo "commit_info<<EOF" >> $GITHUB_OUTPUT
+            echo "$COMMIT_INFO" >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
+
+            # 最新コミットのハッシュ
+            LATEST_COMMIT=$(git log -1 --pretty=format:"%H")
+            echo "latest_commit=$LATEST_COMMIT" >> $GITHUB_OUTPUT
+          else
+            echo "has_updates=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create Issue
+        if: steps.check_updates.outputs.has_updates == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const changedFiles = `${{ steps.check_updates.outputs.changed_files }}`;
+            const commitInfo = `${{ steps.check_updates.outputs.commit_info }}`;
+            const latestCommit = `${{ steps.check_updates.outputs.latest_commit }}`;
+
+            // ファイル一覧をマークダウンリストに整形
+            const fileList = changedFiles.split('\n')
+              .filter(f => f.trim())
+              .map(f => `- \`${f}\``)
+              .join('\n');
+
+            const issueBody = `## 📢 Tsumiki Update Detected
+
+            [classmethod/tsumiki](https://github.com/classmethod/tsumiki) に新しい更新が検出されました。
+
+            ## 📁 Changed Files
+
+            ${fileList}
+
+            ## 📝 Commits
+
+            ${commitInfo}
+
+            ## 🔗 Links
+
+            - [Latest Commit](https://github.com/classmethod/tsumiki/commit/${latestCommit})
+            - [Compare Changes](https://github.com/classmethod/tsumiki/compare/main...${latestCommit})
+            - [Repository](https://github.com/classmethod/tsumiki)
+
+            ## ✅ Action Items
+
+            - [ ] 変更内容を確認
+            - [ ] TDDワークフローへの影響を確認
+            - [ ] コマンド定義の更新が必要か検討
+            - [ ] 破壊的変更がないか確認
+
+            ---
+
+            🤖 自動生成されたIssueです（週次チェック: 毎週月曜日 10:00 JST）`;
+
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `🔄 Tsumiki Update - ${new Date().toISOString().split('T')[0]}`,
+              body: issueBody,
+              labels: ['upstream-update', 'tsumiki', 'automated']
+            });
+
+      - name: Update last check timestamp
+        if: always()
+        run: |
+          mkdir -p .github
+          date --iso-8601=seconds > .github/.last-tsumiki-check
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .github/.last-tsumiki-check
+          git diff --staged --quiet || git commit -m "chore: Update Tsumiki check timestamp [skip ci]"
+          git push
