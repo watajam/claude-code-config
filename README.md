@@ -52,11 +52,20 @@ SuperClaudeフレームワーク、カスタムエージェント、スラッシ
 
 ## 参考資料
 
+### フレームワーク・エージェント
+
 - [SuperClaude Framework](https://github.com/SuperClaude-Org/SuperClaude_Framework)
 - [wshobson/agents](https://github.com/wshobson/agents)
 - [サブエージェントの例 - Anthropic公式](https://docs.anthropic.com/ja/docs/claude-code/sub-agents)
 - [serena-expertの活用](https://zenn.dev/sc30gsw/articles/ff81891959aaef#2.-sub-agent)
 - [Claude Code活用術](https://note.com/taku_sid/n/n9daa1a6ead98)
+
+### MCP導入ガイド
+
+- [Claude CodeでMCPツール（Context7、Serena、Cipher）を活用してAIコーディングを次のレベルへ](https://qiita.com/sukimaengineer/items/845ad14a3ec2d3c39930)
+- [Claude Code で Context7、Serena、Cipher を同時使用する際の注意事項](https://qiita.com/sukimaengineer/items/9a0a10d23c86f2a2e850)
+- [Claude Code MCP Serena & Cipher 導入ガイド](https://zenn.dev/aki1990/articles/a7db63dbc99848)
+- [Claude Code を更に賢く - serena と cipher を mcp で使う](https://zenn.dev/sho7650/articles/5d9b46a119a08f)
 
 ## 使い方
 
