@@ -1,0 +1,147 @@
+{
+  "env": {
+    "CLAUDE_CODE_ENABLE_TELEMETRY": "0"
+  },
+  "permissions": {
+    "allow": [
+      "Bash(ls:*)",
+      "Bash(find:*)",
+      "Bash(rg:*)",
+      "Bash(cat:*)",
+      "Bash(mkdir:*)",
+      "Bash(mv:*)",
+      "Bash(cp:*)",
+      "Bash(rm:*)",
+      "Bash(echo:*)",
+      "Bash(pwd:*)",
+      "Bash(cd:*)",
+      "Bash(git status:*)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(git branch:*)",
+      "Bash(git checkout:*)",
+      "Bash(git pull:*)",
+      "Bash(git add:*)",
+      "Bash(gh repo view:*)",
+      "Bash(gh pr list:*)",
+      "Bash(gh pr view:*)",
+      "Bash(gh issue list:*)",
+      "Bash(gh issue view:*)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:docs.anthropic.com)",
+      "WebFetch(domain:developer.mozilla.org)",
+      "WebFetch(domain:nodejs.org)",
+      "WebFetch(domain:npmjs.com)"
+    ],
+    "deny": [
+      "Bash(rm -rf /*)",
+      "Bash(rm -rf ~/*)",
+      "Bash(sudo:*)",
+      "Bash(git config *)",
+      "Bash(git reset:*)",
+      "Bash(git rebase:*)",
+      "Bash(git push:*)",
+      "Bash(git commit:*)",
+      "Bash(curl:*)",
+      "Bash(wget:*)",
+      "Bash(nc:*)",
+      "Bash(npm uninstall:*)",
+      "Bash(npm remove:*)",
+      "Bash(psql:*)",
+      "Bash(mysql:*)",
+      "Bash(mongod:*)",
+      "Bash(gh repo delete:*)",
+      "Bash(gh auth token:*)",
+      "Bash(gh secret set:*)",
+      "Bash(gh variable set:*)",
+      "Bash(gh workflow disable:*)",
+      "Bash(gh release delete:*)",
+      "Bash(gh api DELETE:*)",
+      "Bash(gh api PUT:*)",
+      "Bash(gh api PATCH:*)",
+      "Bash(gh api POST:*)",
+      "Bash(gh ssh-key add:*)",
+      "Bash(gh gpg-key add:*)",
+      "Bash(gh auth login:*)",
+      "Bash(gh auth refresh:*)",
+      "Bash(gh repo fork:*)",
+      "Bash(gh repo clone:*)",
+      "Bash(gh gist create:*)",
+      "Read(id_rsa)",
+      "Read(id_ed25519)",
+      "Read(.env*)",
+      "Read(**/*token*)",
+      "Read(**/*key*)",
+      "Read(**/mcp.json)",
+      "Write(.env*)",
+      "Write(**/secrets/**)",
+      "Bash(*:**/mcp.json)",
+      "mcp__supabase__execute_sql"
+    ]
+  },
+  "hooks": {
+    "Notification": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "terminal-notifier -title 'Claude Code' -subtitle '確認待ち' -message 'Claude Codeが許可を求めています' -sound Glass -activate -activate com.todesktop.230313mzl4w4u92"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "terminal-notifier -title 'Claude Code' -subtitle '処理終了' -message 'タスクが完了しました' -sound Hero -activate -activate com.todesktop.230313mzl4w4u92"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Edit|MultiEdit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 -c \"import json, sys; data=json.load(sys.stdin); path=data.get('tool_input',{}).get('file_path',''); sys.exit(2 if any(p in path for p in ['.env', 'package-lock.json', '.git/']) else 0)\""
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash -c 'input=$(cat); cmd=$(echo \"$input\" | jq -r \".tool_input.command // empty\"); if [[ \"$cmd\" =~ (rm|delete).*(\\*|\\.env|credentials|secret) ]]; then echo \"{\\\"action\\\": \\\"block\\\", \\\"message\\\": \\\"Dangerous command blocked: $cmd\\\"}\"; else echo \"{}\"; fi'"
+          }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash -c 'input=$(cat); agent=$(echo \"$input\" | jq -r \".subagent_name // empty\"); if [[ \"$agent\" == \"validation-gates\" ]]; then echo \"Validation gates completed. Running final checks...\" >&2; fi; echo \"{}\"'"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash -c 'input=$(cat); prompt=$(echo \"$input\" | jq -r \".prompt // empty\"); if [[ \"$prompt\" =~ (test|validate|check|テスト|バリデート|チェック) ]] && [[ ! \"$prompt\" =~ (skip|no|without).*(test|validation) ]]; then echo \"Reminder: Use the validation-gates subagent to ensure comprehensive testing.\" >&2; fi; echo \"{}\"'"
+          }
+        ]
+      }
+    ]
+  },
+  "alwaysThinkingEnabled": true
+}

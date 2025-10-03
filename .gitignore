@@ -1,0 +1,35 @@
+# 機密情報
+history.jsonl
+.superclaude-metadata.json
+
+# ドキュメント（個人設定）
+/*.md
+!CLAUDE.md
+!README.md
+
+# ログとキャッシュ
+logs/
+file-history/
+shell-snapshots/
+downloads/
+
+# プロジェクト固有情報
+projects/
+
+# システムファイル
+.DS_Store
+
+# バックアップ
+backups/
+
+# 統計データ
+statsig/
+
+# Todos（個人のタスク管理）
+todos/
+
+# IDE設定
+ide/
+
+# プラグイン（個人カスタマイズ）
+plugins/
