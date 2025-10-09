@@ -37,7 +37,7 @@
       "Bash(rm -rf /*)",
       "Bash(rm -rf ~/*)",
       "Bash(sudo:*)",
-      "Bash(git config *)",
+      "Bash(git config:*)",
       "Bash(git reset:*)",
       "Bash(git rebase:*)",
       "Bash(git push:*)",
@@ -75,7 +75,7 @@
       "Read(**/mcp.json)",
       "Write(.env*)",
       "Write(**/secrets/**)",
-      "Bash(*:**/mcp.json)",
+      "Bash(**/mcp.json:*)",
       "mcp__supabase__execute_sql"
     ]
   },
@@ -143,5 +143,5 @@
       }
     ]
   },
-  "alwaysThinkingEnabled": true
+  "alwaysThinkingEnabled": false
 }
